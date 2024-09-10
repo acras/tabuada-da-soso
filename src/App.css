@@ -1,38 +1,73 @@
-.App {
-  text-align: center;
+body {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    background-color: #f9f7e8;
+    text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centraliza verticalmente */
+    background-color: #ffeaa7; /* Cor de fundo vibrante */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1 {
+    font-size: 48px; /* Deixa o título bem grande */
+    color: #d63031; /* Cor vibrante para o título */
+    margin-bottom: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input[type="text"] {
+    padding: 15px;
+    width: 400px; /* Torna o campo de texto maior */
+    font-size: 20px;
+    border-radius: 10px;
+    border: 2px solid #2d3436;
+    margin-bottom: 30px;
+    background-color: #74b9ff; /* Fundo colorido para o input */
+    color: #2d3436;
 }
 
-.App-link {
-  color: #61dafb;
+.level-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.level-button {
+    padding: 15px 40px; /* Torna os botões maiores */
+    margin: 0 15px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #00b894; /* Cor vibrante para os botões */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.level-button:hover {
+    background-color: #00cec9;
+}
+
+.level-button.selected {
+    background-color: #6c5ce7; /* Cor diferente para o botão selecionado */
+}
+
+button {
+    padding: 15px 40px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #fdcb6e;
+    color: #2d3436;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #fab1a0;
 }
