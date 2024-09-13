@@ -105,8 +105,8 @@ function GameScreen({ onEndGame, level, playerName }) {
     <div className="game-screen">
       <h2>{`Pergunta: Quanto é ${question.num1} x ${question.num2}?`}</h2>
       <input
-        type="text"
-        inputMode="numeric"
+        type="tel"
+        inputMode="decimal"
         pattern="[0-9]*"
         value={userAnswer}
         onChange={(e) => setUserAnswer(e.target.value)} // Permite digitar o resultado
