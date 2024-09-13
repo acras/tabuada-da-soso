@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import "./GameScreen.css"; // Importa o arquivo CSS para os botões numéricos
+import React, { useState, useEffect } from "react";
+import "./GameScreen.css";
 
 const generateQuestion = () => {
   const num1 = Math.floor(Math.random() * 10) + 1;
@@ -7,7 +7,7 @@ const generateQuestion = () => {
   return { num1, num2, correctAnswer: num1 * num2 };
 };
 
-function GameScreen({ onEndGame, level, playerName }) {
+function GameScreen({ onEndGame, level }) {
   const [question, setQuestion] = useState(generateQuestion());
   const [userAnswer, setUserAnswer] = useState("");
   const [score, setScore] = useState(0);
@@ -18,9 +18,6 @@ function GameScreen({ onEndGame, level, playerName }) {
     return 4;
   });
 
-  const inputRef = useRef(null);
-  let timerRef = useRef(null);
-
   // Função para submeter a resposta
   const handleSubmit = () => {
     const isCorrect = parseInt(userAnswer) === question.correctAnswer;
@@ -29,15 +26,13 @@ function GameScreen({ onEndGame, level, playerName }) {
       setScore(score + Math.pow(2, levelMultiplier - 1));
       setLevelMultiplier(levelMultiplier + 1);
       setQuestion(generateQuestion());
-      setUserAnswer("");
+      setUserAnswer(""); // Limpa a resposta
       setTimeLeft(() => {
         if (level === "Fácil") return 10;
         if (level === "Médio") return 6;
         return 4;
       });
     } else {
-      // Enviar a pontuação ao backend quando o jogo terminar
-      sendScore(playerName, level, score);
       onEndGame(
         score,
         level,
@@ -46,14 +41,14 @@ function GameScreen({ onEndGame, level, playerName }) {
         question.correctAnswer,
       );
     }
-
-    inputRef.current.focus();
   };
 
-  // Função para detectar a tecla Enter
+  // Função para detectar teclas digitadas
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
+    } else if (/^\d$/.test(e.key)) {
+      setUserAnswer((prevAnswer) => prevAnswer + e.key); // Adiciona o número digitado
     }
   };
 
@@ -62,30 +57,22 @@ function GameScreen({ onEndGame, level, playerName }) {
     setUserAnswer((prevAnswer) => prevAnswer + number);
   };
 
-  const sendScore = async (name, level, score) => {
-    try {
-      const response = await fetch("http://localhost:3001/api/score", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, level, score }),
-      });
-      const data = await response.json();
-      console.log("Resposta do servidor:", data);
-    } catch (error) {
-      console.error("Erro ao enviar pontuação:", error);
-    }
-  };
-
+  // Captura os eventos de teclado
   useEffect(() => {
-    inputRef.current.focus();
+    window.addEventListener("keydown", handleKeyDown);
 
-    timerRef.current = setInterval(() => {
+    // Limpa o evento ao desmontar o componente
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [userAnswer]);
+
+  // Função para controlar o temporizador
+  useEffect(() => {
+    const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime === 1) {
-          clearInterval(timerRef.current);
-          sendScore(playerName, level, score); // Enviar a pontuação quando o tempo acabar
+          clearInterval(timer);
           onEndGame(
             score,
             level,
@@ -98,22 +85,19 @@ function GameScreen({ onEndGame, level, playerName }) {
       });
     }, 1000);
 
-    return () => clearInterval(timerRef.current);
+    return () => clearInterval(timer);
   }, [question, onEndGame, score, level]);
 
   return (
     <div className="game-screen">
       <h2>{`Pergunta: Quanto é ${question.num1} x ${question.num2}?`}</h2>
-      <input
-        type="tel"
-        inputMode="decimal"
-        pattern="[0-9]*"
-        value={userAnswer}
-        onChange={(e) => setUserAnswer(e.target.value)} // Permite digitar o resultado
-        onKeyDown={handleKeyDown} // Permite submeter com Enter
-        ref={inputRef}
-      />
+      <div className="user-answer">
+        <span>Resposta: {userAnswer || "_"}</span>{" "}
+        {/* Mostra o que foi digitado */}
+      </div>
+
       <div className="number-buttons">
+        {/* Botões de números */}
         <div className="number-row">
           <button
             className="number-button"
