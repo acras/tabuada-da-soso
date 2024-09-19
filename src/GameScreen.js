@@ -28,6 +28,11 @@ function GameScreen({ onEndGame, playerName }) {
     setUserAnswer(""); // Limpa a resposta
   };
 
+  // Função para limpar a resposta
+  const handleClear = () => {
+    setUserAnswer(""); // Limpa o campo da resposta
+  };
+
   // Função para detectar teclas digitadas
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -64,9 +69,9 @@ function GameScreen({ onEndGame, playerName }) {
 
   return (
     <div className="game-screen">
-      <h2>{`Pergunta: Quanto é ${question.num1} x ${question.num2}?`}</h2>
-      <div className="user-answer">
-        <span>Resposta: {userAnswer || "_"}</span>
+      <div className="question">
+        <h2>{`${question.num1} x ${question.num2} = ${userAnswer || "_"}`}</h2>{" "}
+        {/* Mostra a conta em uma linha */}
       </div>
 
       <div className="number-buttons">
@@ -130,19 +135,22 @@ function GameScreen({ onEndGame, playerName }) {
             9
           </button>
         </div>
-        <div className="number-row">
-          <div className="spacer" />
+        <div className="number-row last-row">
+          <button className="icon-button" onClick={handleClear}>
+            🗑️ {/* Ícone de lixeira */}
+          </button>
           <button
             className="number-button"
             onClick={() => setUserAnswer((prev) => prev + "0")}
           >
             0
           </button>
-          <div className="spacer" />
+          <button className="ok-button" onClick={handleSubmit}>
+            OK
+          </button>
         </div>
       </div>
 
-      <button onClick={handleSubmit}>Enviar Resposta</button>
       <p>Pontuação Atual: {score}</p>
       <p>Tempo Restante: {timeLeft} segundos</p>
     </div>

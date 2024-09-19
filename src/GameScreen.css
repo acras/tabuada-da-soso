@@ -1,8 +1,25 @@
+.game-screen {
+    height: 100vh;
+    background-color: #f0f8ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.question h2 {
+    font-size: 3.5em; /* Tamanho maior da pergunta */
+    color: #333;
+    margin-bottom: 20px;
+}
+
 .number-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .number-row {
@@ -11,34 +28,60 @@
     margin-bottom: 10px;
 }
 
-.number-button {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    margin: 5px;
-    border-radius: 10px;
-    background-color: #fd79a8;
-    color: white;
+.number-row.last-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Três colunas iguais */
+    gap: 10px; /* Espaço entre os botões */
+    width: 260px; /* Definindo uma largura fixa para garantir alinhamento */
+}
+
+.number-button,
+.ok-button,
+.icon-button {
+    background-color: #4caf50;
     border: none;
+    color: white;
+    width: 80px; /* Largura fixa para todos os botões */
+    height: 80px; /* Altura fixa para todos os botões */
+    font-size: 2em; /* Números mais destacados */
+    margin: 5px;
+    border-radius: 8px; /* Redução do arredondamento */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.1s ease,
+        background-color 0.2s ease;
 }
 
-.number-button:hover {
-    background-color: #e84393;
+.number-button:hover,
+.ok-button:hover,
+.icon-button:hover {
+    background-color: #45a049;
 }
 
-input[type="text"] {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
-    border: 2px solid #6c5ce7;
-    border-radius: 10px;
-    padding: 10px;
-    width: 200px;
+.number-button:active,
+.ok-button:active,
+.icon-button:active {
+    transform: scale(0.95);
 }
 
-.spacer {
-    width: 60px;
-    height: 60px;
+.ok-button {
+    background-color: #333; /* Botão OK mais escuro */
+}
+
+.ok-button:hover {
+    background-color: #555;
+}
+
+.icon-button {
+    background-color: #ff4d4d; /* Botão da lixeira vermelho */
+}
+
+.icon-button:hover {
+    background-color: #e60000;
+}
+
+p {
+    font-size: 1.5em;
+    color: #333;
 }
