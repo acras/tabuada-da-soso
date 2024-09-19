@@ -1,0 +1,51 @@
+.start-screen {
+    height: 100vh;
+    background-image: url("/public/capivara_matematica.png"); /* Substitua pelo caminho correto */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.8
+    ); /* Fundo semitransparente para legibilidade */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.content input {
+    padding: 10px;
+    font-size: 1.2em;
+    border: 2px solid #333;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.content button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.content button:hover {
+    background-color: #555;
+}
