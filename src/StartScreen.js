@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { fetchRanking } from "./rankingService";
 
 function StartScreen({ onStartGame }) {
   const [name, setName] = useState("");
-  const [level, setLevel] = useState("");
-  const [rankingFacil, setRankingFacil] = useState([]);
-  const [rankingMedio, setRankingMedio] = useState([]);
-  const [rankingGenio, setRankingGenio] = useState([]);
 
-  // Função para carregar os rankings ao carregar a página
+  // Função para ler o cookie do nome do jogador
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  // Função para definir o cookie do nome do jogador
+  const setCookie = (name, value, days) => {
+    const expires = new Date(Date.now() + days * 86400000).toUTCString();
+    document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+  };
+
   useEffect(() => {
-    const loadRankings = async () => {
-      setRankingFacil(await fetchRanking("Fácil"));
-      setRankingMedio(await fetchRanking("Médio"));
-      setRankingGenio(await fetchRanking("Gênio"));
-    };
-    loadRankings();
+    // Quando a tela inicial é carregada, tenta ler o nome do jogador do cookie
+    const savedName = getCookie("playerName");
+    if (savedName) {
+      setName(savedName); // Sugere o nome salvo no cookie
+    }
   }, []);
 
-  const handleStart = (selectedLevel) => {
-    if (name && selectedLevel) {
-      onStartGame(name, selectedLevel);
+  const handleStart = () => {
+    if (name) {
+      setCookie("playerName", name, 30); // Salva o nome do jogador no cookie por 30 dias
+      onStartGame(name); // Inicia o jogo
     } else {
-      alert("Preencha todos os campos e selecione um nível!");
+      alert("Por favor, insira seu nome para começar!");
     }
   };
 
@@ -31,79 +38,11 @@ function StartScreen({ onStartGame }) {
       <h1>Bem-vindo ao Jogo da Tabuada da Soso!</h1>
       <input
         type="text"
-        placeholder="Seu nome"
+        placeholder="Digite seu nome"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <div className="level-buttons">
-        <button onClick={() => handleStart("Fácil")}>Fácil</button>
-        <button onClick={() => handleStart("Médio")}>Médio</button>
-        <button onClick={() => handleStart("Gênio")}>Gênio</button>
-      </div>
-
-      <div className="rankings">
-        <h2>Ranking dos Top 10 Jogadores</h2>
-
-        <div className="ranking-table">
-          <h3>Nível Fácil</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Pontos</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankingFacil.map((player, index) => (
-                <tr key={index}>
-                  <td>{player.name}</td>
-                  <td>{player.score}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="ranking-table">
-          <h3>Nível Médio</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Pontos</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankingMedio.map((player, index) => (
-                <tr key={index}>
-                  <td>{player.name}</td>
-                  <td>{player.score}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="ranking-table">
-          <h3>Nível Gênio</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Pontos</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankingGenio.map((player, index) => (
-                <tr key={index}>
-                  <td>{player.name}</td>
-                  <td>{player.score}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <button onClick={handleStart}>Começar Jogo</button>
     </div>
   );
 }
